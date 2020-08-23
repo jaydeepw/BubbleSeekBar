@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,20 +10,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="default"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
-    <com.xw.repo.BubbleSeekBar
-        android:id="@+id/demo_1_seek_bar"
-        android:layout_width="match_parent"
-        android:layout_height="16dp"
-        android:layout_marginTop="8dp"/>
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:rotation="270"
+        android:orientation="horizontal">
+
+        <com.xw.repo.BubbleSeekBar
+            android:id="@+id/demo_1_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            app:bsb_always_show_bubble="true"
+            app:bsb_max="100"
+            app:bsb_min="0"
+            app:bsb_progress="50"
+            app:bsb_second_track_color="#0F0"
+            app:bsb_second_track_size="10dp"
+            app:bsb_thumb_color="#0F0"
+            app:bsb_thumb_radius="5dp"
+            app:bsb_thumb_radius_on_dragging="0dp"
+            app:bsb_track_color="#3F51B5"
+            app:bsb_track_size="10dp" />
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="custom colors, show section mark, progress:50"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
     <com.xw.repo.BubbleSeekBar
         android:layout_width="match_parent"
@@ -33,14 +51,14 @@
         app:bsb_progress="50"
         app:bsb_second_track_color="@color/color_green"
         app:bsb_show_section_mark="true"
-        app:bsb_track_color="@color/color_gray"/>
+        app:bsb_track_color="@color/color_gray" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="custom track size, min:100, max:500"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
     <com.xw.repo.BubbleSeekBar
         android:layout_width="match_parent"
@@ -50,13 +68,13 @@
         app:bsb_min="100.0"
         app:bsb_progress="200.0"
         app:bsb_second_track_color="@color/color_blue"
-        app:bsb_track_size="4dp"/>
+        app:bsb_track_size="4dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="section count:5, custom bubble attrs, show thumb text"/>
+        android:text="section count:5, custom bubble attrs, show thumb text" />
 
     <com.xw.repo.BubbleSeekBar
         android:layout_width="match_parent"
@@ -70,12 +88,12 @@
         app:bsb_second_track_color="@color/color_red"
         app:bsb_section_count="5"
         app:bsb_show_section_mark="true"
-        app:bsb_thumb_text_size="18sp"/>
+        app:bsb_thumb_text_size="18sp" />
 
     <Button
         android:id="@+id/demo_1_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/set_random_progress"/>
+        android:text="@string/set_random_progress" />
 </LinearLayout>

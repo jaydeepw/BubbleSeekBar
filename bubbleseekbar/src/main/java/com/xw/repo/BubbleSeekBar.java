@@ -251,9 +251,9 @@ public class BubbleSeekBar extends View {
         if (mSecondTrackSize < mTrackSize) {
             mSecondTrackSize = mTrackSize + dp2px(2);
         }
-        if (mThumbRadius <= mSecondTrackSize) {
+        /*if (mThumbRadius <= mSecondTrackSize) {
             mThumbRadius = mSecondTrackSize + dp2px(2);
-        }
+        }*/
         if (mThumbRadiusOnDragging <= mSecondTrackSize) {
             mThumbRadiusOnDragging = mSecondTrackSize * 2;
         }
