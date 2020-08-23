@@ -9,11 +9,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
@@ -24,6 +28,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -54,7 +59,10 @@ import static com.xw.repo.BubbleUtils.sp2px;
  */
 public class BubbleSeekBar extends View {
 
+    public static final String TAG = BubbleSeekBar.class.getSimpleName();
+
     static final int NONE = -1;
+    private Bitmap bitmap = null;
 
     @IntDef({NONE, SIDES, BOTTOM_SIDES, BELOW_SECTION_MARK})
     @Retention(RetentionPolicy.SOURCE)
@@ -102,6 +110,7 @@ public class BubbleSeekBar extends View {
     private float mDelta; // max - min
     private float mSectionValue; // (mDelta / mSectionCount)
     private float mThumbCenterX; // X coordinate of thumb's center
+    private float jX, jY;
     private float mTrackLength; // pixel length of whole track
     private float mSectionOffset; // pixel length of one section
     private boolean isThumbOnDragging; // is thumb on dragging or not
@@ -119,11 +128,13 @@ public class BubbleSeekBar extends View {
 
     private WindowManager mWindowManager;
     private BubbleView mBubbleView;
+    private BubbleView mBubbleView2;
     private int mBubbleRadius;
     private float mBubbleCenterRawSolidX;
     private float mBubbleCenterRawSolidY;
     private float mBubbleCenterRawX;
     private WindowManager.LayoutParams mLayoutParams;
+    private WindowManager.LayoutParams mLayoutParams2;
     private int[] mPoint = new int[2];
     private boolean isTouchToSeekAnimEnd = true;
     private float mPreSecValue; // previous SectionValue
@@ -213,6 +224,15 @@ public class BubbleSeekBar extends View {
         mBubbleView = new BubbleView(context);
         mBubbleView.setProgressText(isShowProgressInFloat ?
                 String.valueOf(getProgressFloat()) : String.valueOf(getProgress()));
+
+        mBubbleView2 = new BubbleView(context);
+        mBubbleView2.setProgressText(isShowProgressInFloat ?
+                String.valueOf(getProgressFloat()) : String.valueOf(getProgress()));
+
+        bitmap = BitmapFactory.decodeResource(
+                getResources(),
+                R.drawable.ic_drop
+        );
 
         mLayoutParams = new WindowManager.LayoutParams();
         mLayoutParams.gravity = Gravity.START | Gravity.TOP;
@@ -626,10 +646,28 @@ public class BubbleSeekBar extends View {
         // draw second track
         mPaint.setColor(mTrackColor);
         mPaint.setStrokeWidth(mTrackSize);
+        // Log.d(TAG, "onDraw: isRtl " + isRtl);
         if (isRtl) {
             canvas.drawLine(mThumbCenterX, yTop, xLeft, yTop, mPaint);
         } else {
             canvas.drawLine(mThumbCenterX, yTop, xRight, yTop, mPaint);
+            // canvas.drawLine(mThumbCenterX, yTop, 300, 200, mPaint);
+            canvas.drawCircle(mThumbCenterX, yTop, 20f, mPaint);
+            int[] outLocation = new int[2];
+            getLocationInWindow(outLocation);
+            jX = outLocation[0] - 80;
+            jY = outLocation[1];
+
+            // jY = jY - yTop - getPaddingBottom();
+            jY = mThumbCenterX;
+
+            // canvas.drawCircle(mThumbCenterX, outLocation[1]-20, 40f, mPaint);
+            // canvas.drawCircle(mThumbCenterX, getPaddingRight(), 40f, mPaint);
+
+            Rect rect = new Rect((int) mThumbCenterX - 30, (int) yTop - 30, (int) mThumbCenterX + 30, (int) yTop + 30);
+            // canvas.drawRect(rect, mPaint);
+            // canvas.drawBitmap(bitmap, mThumbCenterX, yTop, mPaint);
+            Log.d(TAG, "onDraw: jX " + jX + " jY " + jY + " yTop: " + yTop);
         }
 
         // draw thumb
@@ -996,6 +1034,18 @@ public class BubbleSeekBar extends View {
         animatorSet.start();
     }
 
+    public Point rotatePoint(float x, float y) {
+        // Log.d(TAG, "RotatePoint: " + point);
+        Matrix mat = new Matrix();  //mat is identity
+        mat.postRotate(-270f);  //mat is a rotation matrix of ROTATE_ANGLE degrees
+        float[] point = {x, y};  //create a new float array representing the point (10, 20)
+        mat.mapPoints(point);
+        // Log.d(TAG, "RotatePoint: x'" + point[0] + " y'" + point[1]);
+        Point p = new Point((int) point[0], (int) point[1]);
+        Log.d(TAG, "rotatePoint: x " + x + " y " + y + " x' " + p.x + " y' " + p.y);
+        return p;
+    }
+
     /**
      * Showing the Bubble depends the way that the WindowManager adds a Toast type view to the Window.
      * <p>
@@ -1007,8 +1057,25 @@ public class BubbleSeekBar extends View {
             return;
         }
 
-        mLayoutParams.x = (int) (mBubbleCenterRawX + 0.5f);
-        mLayoutParams.y = (int) (mBubbleCenterRawSolidY + 0.5f);
+        mBubbleView.setRotation(270f);
+        /*mLayoutParams.x = (int) (mBubbleCenterRawX + 0.5f);
+        mLayoutParams.y = (int) (mBubbleCenterRawSolidY + 0.5f);*/
+        Point p = rotatePoint((mBubbleCenterRawX + 0.5f), (mBubbleCenterRawSolidY + 0.5f));
+        mLayoutParams.x = (int) jX;
+        mLayoutParams.y = (int) jY;
+
+        int width = (getWidth()
+                - getPaddingLeft()
+                - getPaddingRight());
+
+        int height = (getHeight()
+                - getPaddingBottom()
+                - getPaddingTop());
+
+        int thumbPos = (int) (getPaddingBottom()
+                + height
+                * getProgress()
+                / getMax());
 
         mBubbleView.setAlpha(0);
         mBubbleView.setVisibility(VISIBLE);
