@@ -676,7 +676,7 @@ public class BubbleSeekBar extends View {
             // canvas.drawRect(rect, mPaint);
             int height = bitmap.getHeight();
             int width = bitmap.getWidth();
-            canvas.drawBitmap(bitmap, (float) (mThumbCenterX - (0.5 * width)), (float) (yTop - (0.8 * width)), mPaint);
+            canvas.drawBitmap(bitmap, (float) (mThumbCenterX - (0.5 * width)), (float) (yTop - (1.2 * width)), mPaint);
             Log.d(TAG, "onDraw: jX " + jX + " jY " + jY + " yTop: " + yTop);
         }
 
