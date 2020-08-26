@@ -231,12 +231,12 @@ public class BubbleSeekBar extends View {
 
         bitmap = BitmapFactory.decodeResource(
                 getResources(),
-                R.drawable.ic_drop
+                R.drawable.ic_drop2
         );
         Matrix matrix = new Matrix();
 
         matrix.postRotate(90);
-        bitmap = Bitmap.createScaledBitmap(bitmap, 240, 240, false);
+        bitmap = Bitmap.createScaledBitmap(bitmap, 120, 120, false);
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         mLayoutParams = new WindowManager.LayoutParams();
@@ -641,7 +641,10 @@ public class BubbleSeekBar extends View {
         }
 
         // draw track
-        int offset = 100;
+
+        // move the y coord of the drawing tracks a bit coz,
+        // the height of this view was not increasing well
+        int offset = 120;
         yTop = yTop + offset;
         mPaint.setColor(mSecondTrackColor);
         mPaint.setStrokeWidth(mSecondTrackSize);
@@ -668,9 +671,6 @@ public class BubbleSeekBar extends View {
 
             // jY = jY - yTop - getPaddingBottom();
             jY = mThumbCenterX;
-
-            // canvas.drawCircle(mThumbCenterX, outLocation[1]-20, 40f, mPaint);
-            // canvas.drawCircle(mThumbCenterX, getPaddingRight(), 40f, mPaint);
 
             // Rect rect = new Rect((int) mThumbCenterX - 30, (int) yTop - 30, (int) mThumbCenterX + 30, (int) yTop + 30);
             // canvas.drawRect(rect, mPaint);

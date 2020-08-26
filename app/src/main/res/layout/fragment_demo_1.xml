@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/activity_horizontal_margin">
@@ -77,12 +78,12 @@
     <com.xw.repo.BubbleSeekBar
         android:id="@+id/demo_1_seek_bar"
         android:layout_width="380dp"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="0dp"
-        android:background="#E91E63"
-        android:padding="0dp"
         android:rotation="0"
+        tools:background="#E91E63"
+        android:padding="0dp"
         app:bsb_always_show_bubble="false"
         app:bsb_max="100"
         app:bsb_min="0"
