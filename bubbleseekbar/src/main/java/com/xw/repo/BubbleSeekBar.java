@@ -233,6 +233,11 @@ public class BubbleSeekBar extends View {
                 getResources(),
                 R.drawable.ic_drop
         );
+        Matrix matrix = new Matrix();
+
+        matrix.postRotate(90);
+        bitmap = Bitmap.createScaledBitmap(bitmap, 240, 240, false);
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         mLayoutParams = new WindowManager.LayoutParams();
         mLayoutParams.gravity = Gravity.START | Gravity.TOP;
@@ -410,7 +415,8 @@ public class BubbleSeekBar extends View {
             height = Math.max(height, mThumbRadiusOnDragging * 2 + mRectText.height());
         }
         height += mTextSpace * 2;
-        setMeasuredDimension(resolveSize(dp2px(180), widthMeasureSpec), height);
+        // setMeasuredDimension(resolveSize(dp2px(180), widthMeasureSpec), height);
+        setMeasuredDimension(resolveSize(dp2px(180), widthMeasureSpec), dp2px(100));
 
         mLeft = getPaddingLeft() + mThumbRadiusOnDragging;
         mRight = getMeasuredWidth() - getPaddingRight() - mThumbRadiusOnDragging;
@@ -635,6 +641,8 @@ public class BubbleSeekBar extends View {
         }
 
         // draw track
+        int offset = 100;
+        yTop = yTop + offset;
         mPaint.setColor(mSecondTrackColor);
         mPaint.setStrokeWidth(mSecondTrackSize);
         if (isRtl) {
@@ -652,7 +660,7 @@ public class BubbleSeekBar extends View {
         } else {
             canvas.drawLine(mThumbCenterX, yTop, xRight, yTop, mPaint);
             // canvas.drawLine(mThumbCenterX, yTop, 300, 200, mPaint);
-            canvas.drawCircle(mThumbCenterX, yTop, 20f, mPaint);
+            // canvas.drawCircle(mThumbCenterX, yTop, 20f, mPaint);
             int[] outLocation = new int[2];
             getLocationInWindow(outLocation);
             jX = outLocation[0] - 80;
@@ -664,9 +672,11 @@ public class BubbleSeekBar extends View {
             // canvas.drawCircle(mThumbCenterX, outLocation[1]-20, 40f, mPaint);
             // canvas.drawCircle(mThumbCenterX, getPaddingRight(), 40f, mPaint);
 
-            Rect rect = new Rect((int) mThumbCenterX - 30, (int) yTop - 30, (int) mThumbCenterX + 30, (int) yTop + 30);
+            // Rect rect = new Rect((int) mThumbCenterX - 30, (int) yTop - 30, (int) mThumbCenterX + 30, (int) yTop + 30);
             // canvas.drawRect(rect, mPaint);
-            // canvas.drawBitmap(bitmap, mThumbCenterX, yTop, mPaint);
+            int height = bitmap.getHeight();
+            int width = bitmap.getWidth();
+            canvas.drawBitmap(bitmap, (float) (mThumbCenterX - (0.5 * width)), (float) (yTop - (0.8 * width)), mPaint);
             Log.d(TAG, "onDraw: jX " + jX + " jY " + jY + " yTop: " + yTop);
         }
 
@@ -1037,7 +1047,7 @@ public class BubbleSeekBar extends View {
     public Point rotatePoint(float x, float y) {
         // Log.d(TAG, "RotatePoint: " + point);
         Matrix mat = new Matrix();  //mat is identity
-        mat.postRotate(-270f);  //mat is a rotation matrix of ROTATE_ANGLE degrees
+        mat.postRotate(270f);  //mat is a rotation matrix of ROTATE_ANGLE degrees
         float[] point = {x, y};  //create a new float array representing the point (10, 20)
         mat.mapPoints(point);
         // Log.d(TAG, "RotatePoint: x'" + point[0] + " y'" + point[1]);
@@ -1058,11 +1068,11 @@ public class BubbleSeekBar extends View {
         }
 
         mBubbleView.setRotation(270f);
-        /*mLayoutParams.x = (int) (mBubbleCenterRawX + 0.5f);
-        mLayoutParams.y = (int) (mBubbleCenterRawSolidY + 0.5f);*/
-        Point p = rotatePoint((mBubbleCenterRawX + 0.5f), (mBubbleCenterRawSolidY + 0.5f));
+        mLayoutParams.x = (int) (mBubbleCenterRawX + 0.5f);
+        mLayoutParams.y = (int) (mBubbleCenterRawSolidY + 0.5f);
+        /*Point p = rotatePoint((mBubbleCenterRawX + 0.5f), (mBubbleCenterRawSolidY + 0.5f));
         mLayoutParams.x = (int) jX;
-        mLayoutParams.y = (int) jY;
+        mLayoutParams.y = (int) jY;*/
 
         int width = (getWidth()
                 - getPaddingLeft()
