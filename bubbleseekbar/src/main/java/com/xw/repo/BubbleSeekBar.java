@@ -676,7 +676,17 @@ public class BubbleSeekBar extends View {
             // canvas.drawRect(rect, mPaint);
             int height = bitmap.getHeight();
             int width = bitmap.getWidth();
-            canvas.drawBitmap(bitmap, (float) (mThumbCenterX - (0.5 * width)), (float) (yTop - (1.2 * width)), mPaint);
+            float dropX = (float) (mThumbCenterX - (0.5 * width));
+            float dropY = (float) (yTop - (1.2 * width));
+
+            float textX = (float) ((float) mThumbCenterX - (0.12 * width));
+            float textY = (float) (yTop - 0.8 * height);
+
+            canvas.drawBitmap(bitmap, dropX, dropY, mPaint);
+            String progress = isShowProgressInFloat ? String.valueOf(getProgressFloat()) : String.valueOf(getProgress());
+            canvas.rotate(90, textX, textY);
+            canvas.drawText(progress, textX, textY, mPaint);
+            canvas.rotate(-90, textX, textY);
             Log.d(TAG, "onDraw: jX " + jX + " jY " + jY + " yTop: " + yTop);
         }
 
